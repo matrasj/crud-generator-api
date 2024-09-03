@@ -19,7 +19,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="varchar">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="icon" type="varchar"/>
             <column name="transition" type="boolean">

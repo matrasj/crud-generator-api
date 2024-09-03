@@ -33,10 +33,12 @@ public class EntityEntityService {
         entityEntity.setIcon(command.getIcon());
         entityEntity.setTransition(command.isTransitable());
 
+        EntityEntity createdEntity = entityEntityRepository.save(entityEntity);
         List<ColEntity> savedCols = colEntityRepository.saveAll(command.getCols().stream().map(col -> ColEntity.builder()
                 .id(col.getId())
                 .name(col.getName())
-                .entityId(col.getEntityId())
+                .entityId(createdEntity.getId())
+                .columnDataType(col.getColumnDataType())
                 .foreignKeyId(col.getForeignKeyId())
                 .build()).collect(Collectors.toList()));
         entityEntity.setCols(savedCols);
