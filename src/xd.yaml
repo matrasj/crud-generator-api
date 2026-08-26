@@ -1,0 +1,295 @@
+openapi: 3.0.3
+info:
+  title: Agent Gateway Models API
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    CreateChatCompletionRequest:
+      type: object
+      properties:
+        model:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionMessage'
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tool'
+        tool_choice:
+          type: object
+        temperature:
+          type: number
+          format: float
+        top_p:
+          type: number
+          format: float
+        n:
+          type: integer
+        stream:
+          type: boolean
+        stop:
+          type: array
+          items:
+            type: string
+        max_tokens:
+          type: integer
+        presence_penalty:
+          type: number
+          format: float
+        frequency_penalty:
+          type: number
+          format: float
+        logit_bias:
+          type: object
+        user:
+          type: string
+        seed:
+          type: integer
+        response_format:
+          type: object
+    ChatCompletionMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          example: "user"
+        content:
+          type: string
+        reasoning_content:
+          type: string
+        name:
+          type: string
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolCall'
+        tool_call_id:
+          type: string
+    CreateChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          example: "chat.completion"
+        created:
+          type: integer
+        model:
+          type: string
+        system_fingerprint:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChoice'
+        usage:
+          $ref: '#/components/schemas/ChatCompletionUsage'
+    ChatCompletionChoice:
+      type: object
+      properties:
+        index:
+          type: integer
+        message:
+          $ref: '#/components/schemas/ChatCompletionMessage'
+        finish_reason:
+          type: string
+          example: "stop"
+    ChatCompletionChunkResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          example: "chat.completion.chunk"
+        created:
+          type: integer
+        model:
+          type: string
+        system_fingerprint:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChunkChoice'
+    ChatCompletionChunkChoice:
+      type: object
+      properties:
+        index:
+          type: integer
+        delta:
+          $ref: '#/components/schemas/ChatCompletionDelta'
+        finish_reason:
+          type: string
+    ChatCompletionDelta:
+      type: object
+      properties:
+        role:
+          type: string
+          example: "assistant"
+        content:
+          type: string
+        reasoning_content:
+          type: string
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolCallChunk'
+    Tool:
+      type: object
+      properties:
+        type:
+          type: string
+          example: "function"
+        function:
+          $ref: '#/components/schemas/Function'
+    Function:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+    ToolCall:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          example: "function"
+        function:
+          $ref: '#/components/schemas/FunctionCall'
+    ToolCallChunk:
+      type: object
+      properties:
+        index:
+          type: integer
+        id:
+          type: string
+        type:
+          type: string
+        function:
+          $ref: '#/components/schemas/FunctionCallChunk'
+    FunctionCall:
+      type: object
+      properties:
+        name:
+          type: string
+        arguments:
+          type: string
+    FunctionCallChunk:
+      type: object
+      properties:
+        name:
+          type: string
+        arguments:
+          type: string
+    ChatCompletionUsage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    CreateEmbeddingRequest:
+      type: object
+      properties:
+        model:
+          type: string
+        input:
+          type: array
+          items:
+            type: string
+        encoding_format:
+          type: string
+          example: "float"
+        dimensions:
+          type: integer
+        user:
+          type: string
+    CreateEmbeddingResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          example: "list"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Embedding'
+        model:
+          type: string
+        usage:
+          $ref: '#/components/schemas/EmbeddingUsage'
+    Embedding:
+      type: object
+      properties:
+        object:
+          type: string
+          example: "embedding"
+        index:
+          type: integer
+        embedding:
+          type: array
+          items:
+            type: number
+            format: float
+    EmbeddingUsage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    RerankRequest:
+      type: object
+      properties:
+        model:
+          type: string
+        query:
+          type: string
+        documents:
+          type: array
+          items:
+            type: string
+        top_n:
+          type: integer
+        return_documents:
+          type: boolean
+    RerankResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RerankResult'
+        meta:
+          $ref: '#/components/schemas/RerankMeta'
+    RerankResult:
+      type: object
+      properties:
+        index:
+          type: integer
+        relevance_score:
+          type: number
+          format: float
+        document:
+          type: object
+    RerankMeta:
+      type: object
+      properties:
+        api_version:
+          type: object
+        billed_units:
+          type: object
