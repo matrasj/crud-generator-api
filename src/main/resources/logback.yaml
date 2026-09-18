@@ -1,4 +1,0 @@
-logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [ReqID: %X{DA-RequestID}, UserID: %X{DA-UserID}, AppID: %X{DA-AppID}] - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [ReqID: %X{DA-RequestID}, UserID: %X{DA-UserID}, AppID: %X{DA-AppID}] - %msg%n"
